@@ -1,4 +1,4 @@
-# Inspect AI Browser Task Example
+# Inspect AI Examples
 
 This directory contains examples of using the Inspect AI framework to evaluate LLM agentic capabilities using web browsing tasks.
 
@@ -253,20 +253,6 @@ inspect eval examples/browser/browser.py --model openai/gpt-4o-mini
 inspect eval examples/browser/browser.py --model anthropic/claude-haiku-4-5
 
 # Test with Mistral Small
-inspect eval examples/browser/browser.py --model mistral/mistral-small-latest
-```
-
-### Comparing Multiple Models
-
-To compare multiple models, run the evaluation for each model:
-
-```bash
-# Compare OpenAI and Anthropic
-inspect eval examples/browser/browser.py --model openai/gpt-4o-mini,anthropic/claude-haiku-4-5
-
-# Or run them separately and compare logs
-inspect eval examples/browser/browser.py --model openai/gpt-4o-mini
-inspect eval examples/browser/browser.py --model anthropic/claude-haiku-4-5
 inspect eval examples/browser/browser.py --model mistral/mistral-small-latest
 ```
 
