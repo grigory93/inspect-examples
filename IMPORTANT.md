@@ -37,12 +37,14 @@ services:
 ```
 ✅ CORRECT structure:
 examples/
-  ├── browser.py
-  └── compose.yaml
+  └── browser
+        ├── browser.py
+        └── compose.yaml
 
 ❌ WRONG structure:
 examples/
-  └── browser.py
+  └── browser
+        ├── browser.py
 compose.yaml  # At root level
 ```
 
@@ -240,24 +242,6 @@ scorer=model_graded_qa(model="openai/gpt-4o-mini")
 
 ---
 
-## 11. Command Path Changes After Restructure
-
-**Problem:** Old documentation shows incorrect command paths.
-
-**Solution:** Always use the package path:
-
-```bash
-# ❌ OLD - Won't work anymore
-inspect eval browser.py --model openai/gpt-4o-mini
-inspect list browser.py
-
-# ✅ NEW - Correct package path
-inspect eval examples/browser.py --model openai/gpt-4o-mini
-inspect list examples/browser.py
-```
-
----
-
 ## 12. Python Version Requirements
 
 **Problem:** Older Python versions may have compatibility issues.
@@ -312,33 +296,7 @@ use_tools(web_browser(timeout=180))  # 3 minutes
 use_tools(web_browser(timeout=300))  # 5 minutes
 ```
 
----
-
-## 15. File Organization After Migration
-
-**Problem:** After project restructure, old file references break.
-
-**Solution:** Updated structure and references:
-
-```
-✅ Current Structure:
-inspect-examples/
-├── examples/        # All Python task files here
-│   ├── __init__.py
-│   ├── browser.py
-│   └── compose.yaml
-├── logs/                   # Auto-generated evaluation logs
-├── pyproject.toml          # Dependencies configuration
-├── README.md              # Documentation
-└── *.sh                   # Helper scripts
-```
-
-**All commands updated:**
-- All `inspect eval` commands use `examples/` prefix
-- All imports reference the package properly
-- Documentation consistently uses new paths
-
----
+--
 
 ## 16. Sandbox Tuple Format
 

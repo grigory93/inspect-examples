@@ -99,39 +99,6 @@ inspect eval examples/browser/browser.py --model mistral/mistral-small-latest
 inspect view
 ```
 
-## What You're Testing
-
-The browser task evaluates whether the model can:
-1. ✅ Use the web browser tool to navigate to a website
-2. ✅ Find specific information on that website
-3. ✅ Summarize the information in a coherent way
-
-This tests **agentic capabilities** - the model's ability to use tools and complete multi-step tasks autonomously.
-
-## Expected Output
-
-When you run the evaluation, you'll see:
-- Progress bar showing task completion
-- Results summary with scores
-- Link to detailed logs
-
-In the log viewer, you can inspect:
-- The exact prompts sent to the model
-- Tool calls made by the model
-- Web pages visited
-- Final responses
-- Scores and evaluation details
-
-## Next Steps
-
-Once you've successfully run the basic task:
-1. Try different models and compare their performance
-2. Review `examples/browser/README.md` for browser-specific documentation
-3. Modify the task in `examples/browser/browser.py` to test different websites
-4. Create your own example following the guide in the main README.md
-5. Review the main README.md for advanced options and best practices
-6. Explore the Inspect AI documentation for more features
-
 ## Common Issues
 
 **"Docker not found"**: Make sure Docker is installed and running  
