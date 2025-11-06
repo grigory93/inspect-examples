@@ -69,6 +69,22 @@ def custom_scorer():
     
     Returns:
         Task: An Inspect AI task configured with RAGChecker scoring.
+        
+    Note:
+        The scorer uses gpt-4o-mini by default for both extraction and checking.
+        You can customize the models used:
+        
+        - Use more powerful models for both:
+          scorer=ragchecker_scorer(
+              extractor_model="openai/gpt-4o",
+              checker_model="openai/gpt-4o"
+          )
+        
+        - Use different models (e.g., fast extraction, accurate checking):
+          scorer=ragchecker_scorer(
+              extractor_model="openai/gpt-4o-mini",
+              checker_model="openai/gpt-4o"
+          )
     """
     return Task(
         dataset=EVAL_SAMPLES,

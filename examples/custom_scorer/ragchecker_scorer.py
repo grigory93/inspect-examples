@@ -9,13 +9,29 @@ from inspect_ai.solver import TaskState
 
 
 @scorer(metrics=[accuracy(), stderr()])
-def ragchecker_scorer() -> Scorer:
+def ragchecker_scorer(
+    extractor_model: str = "openai/gpt-4o-mini",
+    checker_model: str = "openai/gpt-4o-mini"
+) -> Scorer:
     """Create a RAGChecker-based scorer for evaluating model responses.
     
     This scorer uses RAGChecker to compute precision, recall, and F1 scores
     by comparing model responses against ground truth targets. RAGChecker
     performs fine-grained claim-level evaluation to determine how accurate
     and complete the model's responses are.
+    
+    Args:
+        extractor_model: Model name to use for RAGChecker's claim extraction.
+            Defaults to "openai/gpt-4o-mini". This model breaks down responses
+            and ground truth into individual claims for comparison.
+        checker_model: Model name to use for RAGChecker's claim verification.
+            Defaults to "openai/gpt-4o-mini". This model verifies whether
+            extracted claims are supported or contradicted.
+            
+    Both parameters accept any model supported by LiteLLM, including:
+    - OpenAI: "openai/gpt-4o", "openai/gpt-4o-mini", "openai/gpt-4-turbo"
+    - Anthropic: "anthropic/claude-3-5-sonnet-20241022", "anthropic/claude-3-opus-20240229"
+    - Other providers supported by LiteLLM
     
     The scorer requires:
     - OpenAI API access (via OPENAI_API_KEY environment variable)
@@ -25,7 +41,29 @@ def ragchecker_scorer() -> Scorer:
     Returns:
         Scorer: A scorer function that computes RAGChecker metrics.
         
-    Example:
+    Examples:
+        Using default models (gpt-4o-mini for both):
+        ```python
+        scorer=ragchecker_scorer()
+        ```
+        
+        Using same model for both extraction and checking:
+        ```python
+        scorer=ragchecker_scorer(
+            extractor_model="openai/gpt-4o",
+            checker_model="openai/gpt-4o"
+        )
+        ```
+        
+        Using different models (e.g., fast extraction, accurate checking):
+        ```python
+        scorer=ragchecker_scorer(
+            extractor_model="openai/gpt-4o-mini",
+            checker_model="openai/gpt-4o"
+        )
+        ```
+        
+        Complete task example:
         ```python
         from inspect_ai import Task, task
         from inspect_ai.dataset import Sample
@@ -42,7 +80,10 @@ def ragchecker_scorer() -> Scorer:
                     )
                 ],
                 solver=[generate()],
-                scorer=ragchecker_scorer()
+                scorer=ragchecker_scorer(
+                    extractor_model="openai/gpt-4o",
+                    checker_model="openai/gpt-4o"
+                )
             )
         ```
     """
@@ -99,10 +140,10 @@ def ragchecker_scorer() -> Scorer:
             rag_results = RAGResults.from_json(json.dumps(rag_data))
             
             # Set up the RAGChecker evaluator
-            # Using OpenAI models via LiteLLM
+            # Using specified models for extraction and checking
             evaluator = RAGChecker(
-                extractor_name="openai/gpt-4o-mini",
-                checker_name="openai/gpt-4o-mini",
+                extractor_name=extractor_model,
+                checker_name=checker_model,
                 batch_size_extractor=1,
                 batch_size_checker=1
             )
