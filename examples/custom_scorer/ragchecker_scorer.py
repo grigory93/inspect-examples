@@ -4,11 +4,15 @@ This module implements a custom scorer that uses RAGChecker to evaluate
 precision, recall, and F1 scores for model responses based on ground truth targets.
 """
 
-from inspect_ai.scorer import Score, Scorer, Target, accuracy, metric, scorer, stderr
+from inspect_ai.scorer import Score, Scorer, Target, mean, scorer, stderr
 from inspect_ai.solver import TaskState
 
 
-@scorer(metrics=[accuracy(), stderr()])
+@scorer(
+    metrics={
+        "*": [mean(), stderr()], 
+    }
+)
 def ragchecker_scorer(
     extractor_model: str = "openai/gpt-4o-mini",
     checker_model: str = "openai/gpt-4o-mini"
@@ -157,21 +161,16 @@ def ragchecker_scorer(
             recall = metrics.get("overall_metrics", {}).get("recall", 0.0)
             f1 = metrics.get("overall_metrics", {}).get("f1", 0.0)
             
-            # Use F1 as the primary score value
-            # Store all metrics in metadata
             return Score(
-                value=f1 / 100.0,  # Convert from 0-100 to 0-1 scale
+                value={
+                    "precision": precision / 100.0,
+                    "recall": recall / 100.0,
+                    "f1": f1 / 100.0,
+                },
                 answer=model_response,
-                explanation=f"Precision: {precision:.1f}%, Recall: {recall:.1f}%, F1: {f1:.1f}%",
-                metadata={
-                    "precision": precision,
-                    "recall": recall,
-                    "f1": f1,
-                }
             )
             
         except Exception as e:
-            # Handle any errors during evaluation
             return Score(
                 value="E",
                 explanation=f"Error during RAGChecker evaluation: {str(e)}",
