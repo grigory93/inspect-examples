@@ -19,6 +19,11 @@ gcloud = [
     "google-cloud-secret-manager>=2.16.0",
     "google-cloud-logging>=3.5.0",
 ]
+ragchecker = [
+    "ragchecker>=0.1.9",
+    "litellm>=1.0.0",
+    "spacy>=3.0.0",
+]
 all-providers = [
     "openai>=1.0.0",
     "anthropic>=0.18.0",

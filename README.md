@@ -554,6 +554,30 @@ inspect eval examples/browser/browser.py --model openai/gpt-4o-mini
 
 **Documentation**: See `examples/browser/README.md`
 
+### Custom Scorer Example (RAGChecker)
+
+**Location**: `examples/custom_scorer/`
+
+Demonstrates how to create custom scorers using RAGChecker for fine-grained evaluation with precision, recall, and F1 metrics.
+
+**What it evaluates:**
+- Response accuracy (precision)
+- Response completeness (recall)
+- Balanced quality (F1 score)
+- Fine-grained claim-level analysis
+
+**Running:**
+```bash
+# Install dependencies first
+pip install ragchecker litellm
+python -m spacy download en_core_web_sm
+
+# Run evaluation
+inspect eval examples/custom_scorer/custom_scorer.py --model openai/gpt-4o-mini
+```
+
+**Documentation**: See `examples/custom_scorer/README.md` and `examples/custom_scorer/QUICKSTART.md`
+
 ### Future Examples
 
 Planned examples (contributions welcome):
@@ -562,7 +586,6 @@ Planned examples (contributions welcome):
 - Reasoning chains
 - Safety testing
 - Multimodal tasks
-- Custom tool usage
 - Long-context understanding
 
 ## Best Practices
