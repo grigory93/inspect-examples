@@ -53,7 +53,7 @@ def main():
     logs = eval(
         custom_scorer(),
         model="openai/gpt-4o-mini",
-        limit=1,
+        limit=4,
     )
     log = logs[0]
     print(f"\n{'='*70}")
