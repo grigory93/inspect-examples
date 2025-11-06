@@ -46,7 +46,10 @@ EVAL_SAMPLES = [
 
 
 @task
-def custom_scorer():
+def custom_scorer(
+    extractor_model: str = "openai/gpt-4o-mini",
+    checker_model: str = "openai/gpt-4o-mini"
+):
     """Evaluate LLMs using RAGChecker-based custom scorer.
     
     This task demonstrates how to use a custom scorer that leverages RAGChecker
@@ -62,6 +65,14 @@ def custom_scorer():
     2. Historical events (US founding)
     3. Invention history (airplane)
     
+    Args:
+        extractor_model: Model to use for RAGChecker's claim extraction phase.
+            Defaults to "openai/gpt-4o-mini". This model breaks down responses
+            and ground truth into individual claims for comparison.
+        checker_model: Model to use for RAGChecker's claim verification phase.
+            Defaults to "openai/gpt-4o-mini". This model verifies whether
+            extracted claims are supported or contradicted.
+    
     Requirements:
     - OpenAI API key set in environment (OPENAI_API_KEY)
     - RAGChecker package installed (pip install ragchecker)
@@ -70,25 +81,34 @@ def custom_scorer():
     Returns:
         Task: An Inspect AI task configured with RAGChecker scoring.
         
-    Note:
-        The scorer uses gpt-4o-mini by default for both extraction and checking.
-        You can customize the models used:
+    Examples:
+        Run with default models (gpt-4o-mini for both):
+        ```bash
+        inspect eval examples/custom_scorer/custom_scorer.py --model openai/gpt-4o-mini
+        ```
         
-        - Use more powerful models for both:
-          scorer=ragchecker_scorer(
-              extractor_model="openai/gpt-4o",
-              checker_model="openai/gpt-4o"
-          )
+        Run with custom scorer models via task parameters:
+        ```bash
+        inspect eval examples/custom_scorer/custom_scorer.py \
+            --model openai/gpt-4o-mini \
+            -T extractor_model=openai/gpt-4o \
+            -T checker_model=openai/gpt-4o
+        ```
         
-        - Use different models (e.g., fast extraction, accurate checking):
-          scorer=ragchecker_scorer(
-              extractor_model="openai/gpt-4o-mini",
-              checker_model="openai/gpt-4o"
-          )
+        Use different models for extraction vs checking (cost optimization):
+        ```bash
+        inspect eval examples/custom_scorer/custom_scorer.py \
+            --model openai/gpt-4o \
+            -T extractor_model=openai/gpt-4o-mini \
+            -T checker_model=openai/gpt-4o
+        ```
     """
     return Task(
         dataset=EVAL_SAMPLES,
         solver=[generate()],
-        scorer=ragchecker_scorer(),
+        scorer=ragchecker_scorer(
+            extractor_model=extractor_model,
+            checker_model=checker_model
+        ),
     )
 
