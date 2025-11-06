@@ -17,8 +17,8 @@ EVAL_SAMPLES = [
         id="france_capital",
         input="What is the capital of France and how big is it?",
         target=(
-            "The capital of France is Paris and it's 105.4 square kilometers "
-            "with a population of approximately 2.1 million people in the city proper."
+            "The capital of France is Paris. The city proper covers an area of about 105.4 square kilometers",
+            " (40.7 square miles) with a population of over 2 million."
         ),
     ),
     Sample(
@@ -40,6 +40,19 @@ EVAL_SAMPLES = [
             "on December 17, 1903. The first successful powered flight took place at "
             "Kitty Hawk, North Carolina, USA. Their aircraft, the Wright Flyer, achieved "
             "the first controlled, sustained flight of a powered, heavier-than-air aircraft."
+        ),
+    ),
+    Sample(
+        id="spanish_languages",
+        input="What are major languages spoken in Spain and which regions speak which language?",
+        target=(
+            "Spain's official language nationwide is Spanish (Castilian), yet the country recognizes"
+            "several other languages as co-official in specific autonomous communities, reflecting its rich diversity."
+            "The most prominent co-official languages are Catalan (Català), spoken in Catalonia,"
+            " the Balearic Islands, and the Valencian Community; Galician (Galego), found in Galicia and closely related to Portuguese; "
+            "and Basque (Euskara), an ancient language isolate spoken in the Basque Country and parts of Navarre. "
+            "Additionally, Aranese (Aranés), a variety of Occitan, holds co-official status in the Val d'Aran region of Catalonia, "
+            "further illustrating Spain's regional linguistic variety."
         ),
     ),
 ]
