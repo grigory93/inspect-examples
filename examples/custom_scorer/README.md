@@ -11,6 +11,76 @@ The custom scorer evaluates:
 
 Unlike simple string matching scorers, RAGChecker performs **claim-level evaluation**, breaking down responses into individual claims and checking each one against the ground truth.
 
+## Quick Start (5 Minutes)
+
+Get started quickly with these steps:
+
+### Step 1: Install Dependencies
+
+```bash
+# Install RAGChecker and required packages
+pip install ragchecker litellm
+
+# Or use uv (recommended)
+uv pip install -e ".[ragchecker,openai]"
+
+# Install spaCy English model (required by RAGChecker)
+# If using uv:
+uv pip install en-core-web-sm@https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
+
+# If using regular pip:
+python -m spacy download en_core_web_sm
+```
+
+### Step 2: Set API Key
+
+```bash
+export OPENAI_API_KEY=your-openai-api-key-here
+```
+
+### Step 3: Run Evaluation
+
+```bash
+inspect eval examples/custom_scorer/custom_scorer.py --model openai/gpt-4o-mini
+```
+
+### Step 4: View Results
+
+```bash
+inspect view
+```
+
+You'll see:
+- **Value**: F1 score (0-1 scale)
+- **Metadata**: Precision, Recall, and F1 percentages
+- **Explanation**: Detailed breakdown of scores
+
+### Example Output
+
+```
+Score:
+  Value: 0.87
+  Explanation: Precision: 92.3%, Recall: 82.1%, F1: 87.0%
+  
+Metadata:
+  precision: 92.3
+  recall: 82.1
+  f1: 87.0
+```
+
+This means:
+- ✅ 92.3% of what the model said was correct (high precision)
+- ⚠️ 82.1% of key facts were included (good recall, but some missing)
+- ✅ Overall F1 score of 87% is good
+
+### Interpreting Scores
+
+- **Good scores**: F1 > 0.85 (85%)
+- **Acceptable**: F1 > 0.70 (70%)
+- **Needs work**: F1 < 0.70 (70%)
+
+---
+
 ## What is RAGChecker?
 
 **RAGChecker** is a sophisticated evaluation framework designed for Retrieval-Augmented Generation (RAG) systems, but it works excellently for any Q&A evaluation. It provides:
