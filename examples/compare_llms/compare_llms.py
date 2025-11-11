@@ -156,8 +156,7 @@ plot = (
     #    position_dodge() controls spacing between model groups (how much space each subject group takes)
     #    width controls individual bar thickness
     #    0.87 dodge with 0.82 bar width creates good separation with prominent, readable bars
-    # + geom_col(stat="identity", position="dodge", show_legend=False, width=0.82)
-    + geom_col(stat="identity", position="dodge", show_legend=False)
+    + geom_col(stat="identity", position="dodge", show_legend=True)
     # 2a. Add text labels on top of bars showing "correct_count/dataset_count"
     + geom_text(
         aes(
@@ -167,7 +166,6 @@ plot = (
         position=dodge_position,  # Use the SAME dodge object as geom_col for perfect alignment
         va="bottom",  # Vertical alignment: bottom of text at top of bar
         size=7,  # Font size
-        # nudge_y=0.02,  # Small upward nudge for spacing from bar top
     )
     # 2b. Apply ColorBrewer palette for professional, colorblind-friendly colors
     #     "Set2" palette: pastel colors that work well for categorical data
