@@ -28,3 +28,6 @@ Thumbs.db
 # Project specific
 .python-version
 
+# data
+logs/
+logs_*/
