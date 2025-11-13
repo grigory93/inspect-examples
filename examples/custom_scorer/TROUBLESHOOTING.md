@@ -1,5 +1,33 @@
 # Troubleshooting Guide: macOS Multiprocessing Issues
 
+## Problem: "uv sync" fails with unsatisfiable requirements
+
+When running "uv sync" the following error displayed:
+> × No solution found when resolving dependencies for split (markers: python_full_version >= '3.14'):
+  ╰─▶ Because all versions of refchecker depend on anthropic>=0.29,<0.30 and ragchecker==0.1.9 depends on
+      refchecker, we can conclude that ragchecker==0.1.9 depends on anthropic>=0.29,<0.30.
+      And because only ragchecker<=0.1.9 is available and inspect-examples[ragchecker] depends on
+      ragchecker>=0.1.9, we can conclude that inspect-examples[ragchecker] depends on anthropic>=0.29,<0.30.
+      And because your project depends on anthropic>=0.69.0 and your project requires
+      inspect-examples[ragchecker], we can conclude that your project's requirements are unsatisfiable.
+
+
+### Root Cause
+
+This problem indciates that the dependency on "anthropic" package in ragchecker (==0.29) is inconmpatible with
+the version ">=0.69.0" for the project.
+
+### Solution
+
+When not using custom scorer for ragchecker simply remove dependency on ragchecker from "pyproject.toml":
+```
+ragchecker = [
+    "ragchecker>=0.1.9",
+    "litellm>=1.0.0",
+    "spacy>=3.0.0",
+]
+```
+
 ## Problem: "bad value(s) in fds_to_keep" Error
 
 This error occurs on macOS when Python's multiprocessing module encounters file descriptor conflicts. RAGChecker uses multiprocessing internally, which triggers this issue.

@@ -27,11 +27,14 @@ from inspect_evals.mmmu.mmmu import mmmu_multiple_choice, mmmu_open
 
 config_run_eval = False
 config_eval_limit = 100
-config_log_dir = "./logs_100"
+config_log_dir = "./logs_200"
 
-model_1 = "openai/gpt-4o-mini"
-model_2 = "mistral/mistral-small-latest"
-model_3 = "anthropic/claude-haiku-4-5"
+models = [
+    "openai/gpt-4o-mini",
+    "openai/gpt-5-nano",
+    "mistral/mistral-small-latest",
+    "anthropic/claude-haiku-4-5",
+]
 
 mmmu_subjects = [
     "Biology",
@@ -44,20 +47,21 @@ mmmu_subjects = [
     "Psychology",
 ]
 
-logs = []
+# run evaluation if config_run_eval is True
 if config_run_eval is True:
-    logs = eval_set(
+    success, logs = eval_set(
         # tasks=[agentdojo(workspace="banking"), bold()],
         tasks=[mmmu_open(subjects=subject) for subject in mmmu_subjects]
         + [mmmu_multiple_choice(subjects=subject) for subject in mmmu_subjects],
-        model=[model_1, model_2, model_3],
+        model=models,
         limit=config_eval_limit,
         log_dir=config_log_dir,
     )
-
-if len(logs) > 0:
-    logs = logs[1]
+    if success is False:
+        raise Exception("Evaluation failed")
+# read existing logs if config_run_eval is False
 else:
+    logs = []
     for eval_log_info in list_eval_logs(log_dir=config_log_dir):
         log = read_eval_log(eval_log_info)
         logs.append(log)
@@ -75,6 +79,9 @@ results = pd.DataFrame(
         "metric",
         "score_metric",
         "value",
+        "input_tokens",
+        "output_tokens",
+        "total_tokens",
     ]
 )
 # read existing eval logs
@@ -84,7 +91,16 @@ if logs is not None:
         eval_name = log.eval.task.split("/", maxsplit=1)[1]
         dataset_name = log.eval.dataset.name
         dataset_count = log.eval.dataset.samples
-        correct_count = sum(1 for sample in log.samples if sample.score.value == "C")
+        model_usage = log.stats.model_usage.get(model_name, {})
+        input_tokens = model_usage.input_tokens
+        output_tokens = model_usage.output_tokens
+        total_tokens = model_usage.total_tokens
+        if not log.samples:
+            print(f"No samples found for {log.eval.task} with model {model_name} and dataset {dataset_name} with {log.eval.dataset.samples} samples")
+            correct_count = 0
+        else:
+            score_name = log.eval.scorers[0].name
+            correct_count = sum(1 for sample in log.samples if sample.scores[score_name].value == "C")
         subject = log.eval.task_args_passed["subjects"]
         for score in log.results.scores:
             score_name = score.name
@@ -101,7 +117,13 @@ if logs is not None:
                     "metric": metric_name,
                     "score_metric": f"{score_name}: {metric_name}",
                     "value": metric_value,
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "total_tokens": total_tokens,
                 }
+else:
+    raise Exception("No logs found")
+
 
 # filter for the eval of interest
 # dataset_filter = results["dataset"] == "AgentDojo"
@@ -178,7 +200,7 @@ plot = (
     # 4. Add labels and title
     + labs(
         title="MMMU Benchmark: LLM Performance Across Academic Subjects",
-        subtitle=f"Evaluating 3 models on {len(mmmu_subjects)} subjects | Sample size varies: 1-29 questions per subject | {datetime.now().strftime('%B %Y')}",
+        subtitle=f"Evaluating {len(models)} models on {len(mmmu_subjects)} subjects | Sample size varies: 1-29 questions per subject | {datetime.now().strftime('%B %Y')}",
         y="Accuracy Score",
         x="Subject",
         fill="Model",  # Legend title for shortened model names
