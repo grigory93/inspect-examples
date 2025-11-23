@@ -1471,8 +1471,8 @@ wheels = [
 
 [[package]]
 name = "inspect-evals"
-version = "0.3.102"
-source = { registry = "https://pypi.org/simple" }
+version = "0.3.103.dev60+gef181cdc9"
+source = { git = "https://github.com/UKGovernmentBEIS/inspect_evals.git#ef181cdc95dc2d92b0f9dff8b6c0756b42128b78" }
 dependencies = [
     { name = "datasets" },
     { name = "inspect-ai" },
@@ -1484,10 +1484,6 @@ dependencies = [
     { name = "requests" },
     { name = "tiktoken" },
     { name = "toml" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/f5/ca/6e6443d90932eef7070540dcb96c6c17b8d1ffb4b9dbe49a3319955e88ac/inspect_evals-0.3.102.tar.gz", hash = "sha256:1ebedde40c1530d682b0bb15f76fbfeb3e42ff76553bd1f155f4f67bec73fbbd", size = 81491331, upload-time = "2025-10-22T17:10:18.094Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5c/a3/14449fa74db18c872b7c107f9fcc890304700d66e2e67ce4663f204fc605/inspect_evals-0.3.102-py3-none-any.whl", hash = "sha256:decac6bdc96125bf9d4207dcad28d96b2aae9f32ffe94bc9534a830c7b14c697", size = 75027638, upload-time = "2025-10-22T17:10:14.092Z" },
 ]
 
 [[package]]
@@ -1545,7 +1541,7 @@ requires-dist = [
     { name = "google-genai", marker = "extra == 'all-providers'", specifier = ">=0.2.0" },
     { name = "google-genai", marker = "extra == 'google'", specifier = ">=0.2.0" },
     { name = "inspect-ai", specifier = ">=0.3.0" },
-    { name = "inspect-evals" },
+    { name = "inspect-evals", git = "https://github.com/UKGovernmentBEIS/inspect_evals.git" },
     { name = "mistralai", specifier = ">=1.0.0" },
     { name = "mistralai", marker = "extra == 'all-providers'", specifier = ">=1.0.0" },
     { name = "mistralai", marker = "extra == 'mistral'", specifier = ">=1.0.0" },
