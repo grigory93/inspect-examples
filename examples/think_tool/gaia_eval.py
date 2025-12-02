@@ -2,9 +2,11 @@ from inspect_ai import eval_set
 from inspect_evals.gaia import gaia_level1, gaia_level2
 from inspect_ai.log import list_eval_logs, read_eval_log
 from inspect_ai.solver import Solver, basic_agent, system_message
-from inspect_ai.tool import bash, python, think, web_browser
+from inspect_ai.tool import bash, python, think, web_browser, web_search
 from inspect_ai.util._sandbox.environment import SandboxEnvironmentType
 from textwrap import dedent
+
+from inspect_evals.gaia.gaia import default_solver
 
 
 think_prompt = dedent("""
@@ -47,34 +49,54 @@ def gaia_solver_with_think(
         init=system_message(
             gaia_system_prompt
         ),
-        tools=[bash(code_timeout), python(code_timeout), think(description=think_prompt)] + web_browser(),
+        tools=[
+            bash(code_timeout), 
+            python(code_timeout), 
+            think(description=think_prompt),
+        ] + web_browser(),
         max_attempts=max_attempts,
         max_messages=max_messages,
     )
 
 models = [
-    "openai/gpt-5-nano",
-    "openai/gpt-4o-mini",
+    # "openai/gpt-5-nano",
+    # "openai/gpt-5-mini",
+    # "openai/gpt-4o-mini",
+    # "openai/gpt-4.1-mini",
+    # "anthropic/claude-sonnet-4-5",
     # "anthropic/claude-haiku-4-5",
-    # "mistral/mistral-small-latest",
+    # "anthropic/claude-sonnet-4-20250514",
+    # "anthropic/claude-3-5-haiku-20241022",
+    "mistral/mistral-small-latest",
+    "mistral/mistral-medium-latest",
 ]
 
 # curent run config
-config_run_eval = False
-config_eval_limit = 30
-# config_log_dir = "./logs_gaia_default"
-config_log_dir = "./logs_gaia_level2_think_prompt2"
-config_gaia_benchmark = gaia_level2
-config_gaia_solver = gaia_solver_with_think(max_attempts=1, max_messages=100)
-# config_gaia_solver = None
+config_run_eval = True
+config_eval_limit = 50
+config_eval_max_samples = 10
+config_gaia_benchmark = gaia_level1
+config_gaia_solver = default_solver
+config_gaia_solver = gaia_solver_with_think
 config_gaia_sandbox = ("docker", "examples/think_tool/compose.yaml")
+config_log_dir = f'./logs_mistral10_{config_gaia_benchmark.__name__}_{config_eval_limit}_{"think" if config_gaia_solver == gaia_solver_with_think else "default"}'
 
 
 # Run
 if config_run_eval is True:
-    # success, gaia_logs = eval_set([gaia_level1(solver=gaia_solver_with_think(max_attempts=1, max_messages=100))], model=models, log_dir=config_log_dir, limit=config_eval_limit)
-    success, gaia_logs = eval_set([config_gaia_benchmark(solver=config_gaia_solver, sandbox=config_gaia_sandbox)], model=models, log_dir=config_log_dir, limit=config_eval_limit)
+    success, gaia_logs = eval_set(
+        [config_gaia_benchmark(
+            solver=config_gaia_solver(max_attempts=1, max_messages=100),
+            sandbox=config_gaia_sandbox)
+        ], 
+        model=models, 
+        log_dir=config_log_dir, 
+        limit=config_eval_limit,
+        max_samples=config_eval_max_samples,
+    )
+
     print(success)
+
 else:
     gaia_logs = []
     for eval_log_info in list_eval_logs(log_dir=config_log_dir):

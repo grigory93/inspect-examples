@@ -1497,6 +1497,7 @@ dependencies = [
     { name = "mistralai" },
     { name = "openai" },
     { name = "plotnine" },
+    { name = "requests" },
 ]
 
 [package.optional-dependencies]
@@ -1549,6 +1550,7 @@ requires-dist = [
     { name = "openai", marker = "extra == 'all-providers'", specifier = ">=1.99.7" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.0.0" },
     { name = "plotnine" },
+    { name = "requests", specifier = ">=2.32.5" },
 ]
 provides-extras = ["openai", "anthropic", "mistral", "ai21", "google", "gcloud", "all-providers"]
 
