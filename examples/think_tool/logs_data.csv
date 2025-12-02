@@ -1,0 +1,17 @@
+model,tools,dataset,subset,total_samples,average_turns,duration_seconds,total_tokens,accuracy
+openai/gpt-5-mini,with think,GAIA,gaia_level1,50,13.8,512.0,8673146,0.62
+openai/gpt-4.1-mini,with think,GAIA,gaia_level1,50,16.32,4994.0,1042636,0.28
+openai/gpt-4o-mini,with think,GAIA,gaia_level1,50,17.24,788.0,10617393,0.12
+anthropic/claude-sonnet-4-5,with think,GAIA,gaia_level1,50,20.72,4661.0,15729734,0.72
+openai/gpt-5-nano,with think,GAIA,gaia_level1,50,34.36,3950.0,1329645,0.22
+anthropic/claude-3-5-haiku-20241022,with think,GAIA,gaia_level1,50,4.4,532.0,703631,0.2
+anthropic/claude-sonnet-4-20250514,with think,GAIA,gaia_level1,50,15.24,1071.0,14305741,0.62
+anthropic/claude-haiku-4-5,with think,GAIA,gaia_level1,50,31.6,5544.0,52048902,0.4
+openai/gpt-5-mini,default,GAIA,gaia_level1,50,13.02,1166.0,7695705,0.64
+openai/gpt-4o-mini,default,GAIA,gaia_level1,50,17.9,697.0,11375224,0.1
+openai/gpt-4.1-mini,default,GAIA,gaia_level1,50,16.04,595.0,13503013,0.26
+anthropic/claude-haiku-4-5,default,GAIA,gaia_level1,50,23.48,8333.0,31416871,0.54
+anthropic/claude-sonnet-4-20250514,default,GAIA,gaia_level1,50,11.72,672.0,11114779,0.56
+anthropic/claude-sonnet-4-5,default,GAIA,gaia_level1,50,16.24,8887.0,15016618,0.68
+openai/gpt-5-nano,default,GAIA,gaia_level1,50,21.66,2331.0,14677955,0.24
+anthropic/claude-3-5-haiku-20241022,default,GAIA,gaia_level1,50,3.8,1318.0,1052535,0.2
