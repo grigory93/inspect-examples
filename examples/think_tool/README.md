@@ -34,9 +34,10 @@ think_tool/
 ├── report_logs.py               # Log processing utilities
 ├── compose.yaml                 # Docker sandbox configuration
 ├── logs_data.csv                # Cached evaluation results
-├── compare_*.png                # Bar chart comparisons
-├── parallel_coords_*.png        # Parallel coordinates plots
-└── TROUBLESHOOTING.md           # Common issues and solutions
+├── TROUBLESHOOTING.md           # Common issues and solutions
+└── visuals/                     # Generated visualizations
+    ├── compare_*.png            # Bar chart comparisons
+    └── parallel_coords_*.png    # Parallel coordinates plots
 ```
 
 ## Prerequisites
@@ -177,13 +178,15 @@ uv run python examples/think_tool/compare_llms_with_think.py --refresh
 
 ### Generated Visualizations
 
-**Bar Charts** (`compare_*.png`) compare metrics across all models:
-- `compare_accuracy.png` — Accuracy comparison
-- `compare_total_tokens.png` — Token usage comparison
-- `compare_duration_seconds.png` — Duration comparison
-- `compare_average_turns.png` — Average turns comparison
+All visualizations are saved to the `visuals/` folder.
 
-**Parallel Coordinates** (`parallel_coords_*.png`) show multi-metric comparison for each model individually, displaying accuracy, total tokens, duration, and average turns.
+**Bar Charts** (`visuals/compare_*.png`) compare metrics across all models:
+- `visuals/compare_accuracy.png` — Accuracy comparison
+- `visuals/compare_total_tokens.png` — Token usage comparison
+- `visuals/compare_duration_seconds.png` — Duration comparison
+- `visuals/compare_average_turns.png` — Average turns comparison
+
+**Parallel Coordinates** (`visuals/parallel_coords_*.png`) show multi-metric comparison for each model individually, displaying accuracy, total tokens, duration, and average turns.
 
 ## Results
 
