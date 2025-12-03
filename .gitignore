@@ -11,6 +11,9 @@ env/
 
 # Inspect logs
 logs/
+logs_*/
+logs2_*/
+logs3_*/
 *.eval
 
 # IDE

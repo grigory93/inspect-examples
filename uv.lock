@@ -1492,6 +1492,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "anthropic" },
+    { name = "click" },
     { name = "inspect-ai" },
     { name = "inspect-evals" },
     { name = "mistralai" },
@@ -1536,6 +1537,7 @@ requires-dist = [
     { name = "anthropic", specifier = ">=0.69.0" },
     { name = "anthropic", marker = "extra == 'all-providers'", specifier = ">=0.69.0" },
     { name = "anthropic", marker = "extra == 'anthropic'", specifier = ">=0.69.0" },
+    { name = "click", specifier = ">=8.0.0" },
     { name = "google-cloud-logging", marker = "extra == 'gcloud'", specifier = ">=3.5.0" },
     { name = "google-cloud-secret-manager", marker = "extra == 'gcloud'", specifier = ">=2.16.0" },
     { name = "google-cloud-storage", marker = "extra == 'gcloud'", specifier = ">=2.10.0" },

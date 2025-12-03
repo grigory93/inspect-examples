@@ -1,8 +1,9 @@
-import argparse
 import os
 import re
 from datetime import datetime
 from typing import Optional
+
+import click
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -366,41 +367,39 @@ def load_or_create_dataframe(cache_file: str, force_refresh: bool = False) -> pd
     return df
 
 
-if __name__ == "__main__":
-    # Parse command line arguments
-    parser = argparse.ArgumentParser(description="Generate comparison plots for think tool evaluation")
-    parser.add_argument(
-        "--refresh", 
-        action="store_true", 
-        help="Force refresh of cached data (reprocess logs)"
-    )
-    parser.add_argument(
-        "--bar-charts",
-        action="store_true",
-        help="Generate bar charts comparing metrics across models"
-    )
-    parser.add_argument(
-        "--parallel-coords",
-        action="store_true", 
-        help="Generate parallel coordinates plots for each model"
-    )
-    args = parser.parse_args()
-    
+@click.command()
+@click.option(
+    "--refresh",
+    is_flag=True,
+    help="Force refresh of cached data (reprocess logs)"
+)
+@click.option(
+    "--bar-charts",
+    is_flag=True,
+    help="Generate bar charts comparing metrics across models"
+)
+@click.option(
+    "--parallel-coords",
+    is_flag=True,
+    help="Generate parallel coordinates plots for each model"
+)
+def main(refresh: bool, bar_charts: bool, parallel_coords: bool) -> None:
+    """Generate comparison plots for think tool evaluation."""
     # If no specific plot type is requested, generate all
-    generate_all = not args.bar_charts and not args.parallel_coords
+    generate_all = not bar_charts and not parallel_coords
     
     # Define cache file path in the same directory as this script
     script_dir = os.path.dirname(os.path.abspath(__file__))
     cache_file = os.path.join(script_dir, "logs_data.csv")
     
     # Load or create dataframe
-    df = load_or_create_dataframe(cache_file, force_refresh=args.refresh)
+    df = load_or_create_dataframe(cache_file, force_refresh=refresh)
     
     if df.empty:
         print("No data found")
     else:
         # Create bar chart comparison plots for all metrics
-        if generate_all or args.bar_charts:
+        if generate_all or bar_charts:
             metrics = ["accuracy", "total_tokens", "average_turns", "duration_seconds"]
             
             for metric in metrics:
@@ -410,7 +409,7 @@ if __name__ == "__main__":
                 create_comparison_plot(df, metric=metric)
         
         # Create parallel coordinates plots for all models
-        if generate_all or args.parallel_coords:
+        if generate_all or parallel_coords:
             models = sorted(df["model"].unique())
             
             for model in models:
@@ -418,4 +417,8 @@ if __name__ == "__main__":
                 print(f"Creating parallel coordinates plot for: {model}")
                 print('='*60)
                 create_parallel_coordinates_plot(df, model_name=model)
+
+
+if __name__ == "__main__":
+    main()
 
