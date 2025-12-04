@@ -35,7 +35,9 @@ all-providers = [
 ]
 
 [dependency-groups]
-dev = []
+dev = [
+    "pandas-stubs",
+]
 
 [build-system]
 requires = ["hatchling"]
